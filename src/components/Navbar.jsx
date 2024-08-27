@@ -1,10 +1,11 @@
 import { Moon, Sun1 } from 'iconsax-react';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Navbar() {
-    // const { theme, toggleTheme } = useTheme();
+    const { theme, toggleTheme } = useTheme();
 
     const handleToggle = () => {
-        // toggleTheme();
+        toggleTheme();
     };
 
     return (
@@ -14,8 +15,7 @@ export default function Navbar() {
                 onClick={handleToggle}
                 className="w-[40px] h-[40px] flex items-center justify-center rounded-md border border-darkmode dark:border-white"
             >
-                <Moon size={20} />
-                {/* {theme ? <Sun1 size={20} /> : <Moon size={20} />} */}
+                {theme ? <Sun1 size={20} /> : <Moon size={20} />}
             </button>
         </nav>
     );

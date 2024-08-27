@@ -1,13 +1,34 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
+
+const initialState = {
+    numA: 0,
+    numB: 0,
+    result: 0,
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'SET_NUM_A':
+            return { ...state, numA: action.payload };
+        case 'SET_NUM_B':
+            return { ...state, numB: action.payload };
+        case 'SUM':
+            return { ...state, result: state.numA + state.numB };
+        case 'SUBTRACT':
+            return { ...state, result: state.numA - state.numB };
+        case 'MULTIPLY':
+            return { ...state, result: state.numA * state.numB };
+        default:
+            return state;
+    }
+}
 
 export default function Calculator() {
-    const [numA, setNumA] = useState(0);
-    const [numB, setNumB] = useState(0);
-    const [result, setResult] = useState(0);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
-    const handleSum = () => setResult(numA + numB);
-    const handleSubtract = () => setResult(numA - numB);
-    const handleMultiply = () => setResult(numA * numB);
+    const handleSum = () => dispatch({ type: 'SUM' });
+    const handleSubtract = () => dispatch({ type: 'SUBTRACT' });
+    const handleMultiply = () => dispatch({ type: 'MULTIPLY' });
 
     return (
         <div className="rounded-lg border border-slate-400 mt-12 p-8 dark:border-slate-200">
@@ -15,15 +36,25 @@ export default function Calculator() {
             <div className="space-y-4">
                 <input
                     type="number"
-                    value={numA}
-                    onChange={(e) => setNumA(Number(e.target.value))}
+                    value={state.numA}
+                    onChange={(e) =>
+                        dispatch({
+                            type: 'SET_NUM_A',
+                            payload: Number(e.target.value),
+                        })
+                    }
                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter first number"
                 />
                 <input
                     type="number"
-                    value={numB}
-                    onChange={(e) => setNumB(Number(e.target.value))}
+                    value={state.numB}
+                    onChange={(e) =>
+                        dispatch({
+                            type: 'SET_NUM_B',
+                            payload: Number(e.target.value),
+                        })
+                    }
                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter second number"
                 />
@@ -49,7 +80,7 @@ export default function Calculator() {
                 </div>
             </div>
             <h3 className="text-xl font-semibold text-center mt-6">
-                Resultado: <span className="text-blue-500">{result}</span>
+                Resultado: <span className="text-blue-500">{state.result}</span>
             </h3>
         </div>
     );

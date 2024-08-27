@@ -1,6 +1,10 @@
+import { useRef } from 'react';
+
 export default function AnimatedComponent() {
+    const squareRef = useRef(null);
+
     const changeBoxColor = () => {
-        // función de cambio de color
+        squareRef.current.style.backgroundColor = getRandomColor();
     };
 
     const getRandomColor = () => {
@@ -17,6 +21,7 @@ export default function AnimatedComponent() {
                 {/* BOX */}
                 <div
                     className="size-40 border border-slate-300 rounded-lg"
+                    ref={squareRef}
                 ></div>
 
                 <div>
